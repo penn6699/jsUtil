@@ -156,7 +156,15 @@ function getConstructorName(obj) {
     return _getFunctionName(obj.constructor);
 }
 
-
+//是否Json对象
+function isJsonObject(obj) {
+	try{
+		return typeof (obj) == "object" && Object.prototype.toString.call(obj).toLowerCase() == "[object object]" && !obj.length;
+	}
+	catch (err) {
+		return false;
+	}
+}
 
 
 
