@@ -26,6 +26,17 @@ String.prototype.trim = function () {
     return this.replace(/(^\s*)|(\s*$)/g, '');
 };
 
+//字符串是否包含一个子串
+if(typeof(String.prototype.contains)==="undefined"){
+	//字符串是否包含一个子串
+	String.prototype.contains = function (str) {
+		if (typeof (str) !== "string" || str === "") {
+			return false;
+		}
+		var reg = new RegExp(str);
+		return reg.test(this);
+	};
+}
 // String end----------------------------------------------------------------------------------------
 
 // Array start----------------------------------------------------------------------------------------

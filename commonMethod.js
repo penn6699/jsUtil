@@ -168,5 +168,46 @@ function isJsonObject(obj) {
 	}
 }
 
+//随机整数 min ≤ random ≤ max
+function random(min, max) {
+    return Math.round(Math.random() * (max - min) + min);
+}
+
+//数据容量单位转换(kb,mb,gb,tb)
+function getFileSize(fileSize, withUnit) {
+
+    if (fileSize === 0) return '0 B';
+    var k = 1024,
+        sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+        i = Math.floor(Math.log(fileSize) / Math.log(k));
+
+    if (!Number.prototype.round) {
+        Number.prototype.round = function (number) {
+            return Math.round(this * Math.pow(10, number)) / Math.pow(10, number);
+        };
+    }
+
+    withUnit = typeof (withUnit) === "undefined" ? true : withUnit;
+    if (withUnit) {
+        return (fileSize / Math.pow(k, i)).round(2) + ' ' + sizes[i];
+    }
+    else {
+        return (fileSize / Math.pow(k, i)).round(2);
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
