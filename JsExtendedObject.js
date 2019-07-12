@@ -1,4 +1,5 @@
 ﻿
+// String start---------------------------------------------------------------------------------------
 
 //字符串的format 调用方法如："第一名是{0}, 第二名是{1}".format("张三", "王五")); 'name={name},sex={sex}'.format({name:'xxx',sex:1});
 String.prototype.format = function () {
@@ -20,6 +21,14 @@ String.prototype.format = function () {
     });
 };
 
+//去除字符串两端的空格
+String.prototype.trim = function () {
+    return this.replace(/(^\s*)|(\s*$)/g, '');
+};
+
+// String end----------------------------------------------------------------------------------------
+
+// Array start----------------------------------------------------------------------------------------
 
 //获取数组元素的位置。使用实例：var b=[{name:"2"},{name:"3"},{name:"28"}];b.indexOf("name","3");var a=[1, 2, 3];a.indexOf(2);
 Array.prototype.indexOf = function () {
@@ -55,7 +64,50 @@ Array.prototype.remove = function () {
     }
 };
 
+//移除数组元素。使用实例：var a=[1, 2, 3];a.removeByIndex(2);
+Array.prototype.removeByIndex = function (index) {
+    var _index = typeof (index) !== "number" ? -1 : index;
+    if (_index > -1) {
+        this.splice(_index, 1);
+    }
+};
 
+//对象数组 sort 工具 firstBy js
+if (typeof (firstBy) === 'undefined') {
+    /*** Copyright 2013 Teun Duynstee Licensed under the Apache License, Version 2.0 ***/
+    !function (n, t) { "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? module.exports = t() : n.firstBy = t() }(this, function () { var n = function () { function n(n) { return n } function t(n) { return "string" == typeof n ? n.toLowerCase() : n } function r(r, e) { if (e = "number" == typeof e ? { direction: e } : e || {}, "function" != typeof r) { var i = r; r = function (n) { return n[i] ? n[i] : "" } } if (1 === r.length) { var o = r, f = e.ignoreCase ? t : n, u = e.cmp || function (n, t) { return n < t ? -1 : n > t ? 1 : 0 }; r = function (n, t) { return u(f(o(n)), f(o(t))) } } return e.direction === -1 ? function (n, t) { return -r(n, t) } : r } function e(n, t) { var i = "function" == typeof this && !this.firstBy && this, o = r(n, t), f = i ? function (n, t) { return i(n, t) || o(n, t) } : o; return f.thenBy = e, f } return e.firstBy = e, e }(); return n });
+}
+
+//对象数组，根据字段排序。例如 [{ id: 43, population: 60 },{ id: 5, population: 30 },{ id: 44, population: 60 }].orderbyField("population desc,id")
+Array.prototype.orderbyField = function (orderbystr) {
+    var _this = [].concat(this);
+    var _orderbyObj = null;
+    var _orderbys = (orderbystr + '').split(',');
+    for (var i = 0; i < _orderbys.length; i++) {
+        var _orderby = _orderbys[i].replace(/(^\s*)|(\s*$)/g, '').split(' ')//去除字符串两端的空格后，再分割
+            , _field = _orderby[0] || ""
+            , _descending = !_orderby[1] ? undefined : _orderby[1].toLowerCase() == 'desc' ? -1 : undefined;
+
+        if (_field) {
+            if (_orderbyObj == null) {
+                _orderbyObj = firstBy(_field, _descending)
+            }
+            else {
+                _orderbyObj = _orderbyObj.thenBy(_field, _descending);
+            }
+        }
+    }
+    if (_orderbyObj) {
+        return _this.sort(_orderbyObj);
+    }
+    return _this;
+
+};
+
+// Array end------------------------------------------------------------------------------------------
+
+
+// Date start----------------------------------------------------------------------------------------
 
 /*     
 * 对Date的扩展，将 Date 转化为指定格式的String       
@@ -105,8 +157,19 @@ Date.prototype.format = function (format) {
 //window.alert((new Date()).format("yyyy 年 MM 月 dd 日 hh 时 mm 分 ss 秒")); 
 
 
+// Date end----------------------------------------------------------------------------------------
 
 
+// Number start--------------------------------------------------------------------------------------
+
+//数字的四舍五入
+Number.prototype.round = function (number) {
+    return Math.round(this * Math.pow(10, number)) / Math.pow(10, number);
+};
+
+
+
+// Number end----------------------------------------------------------------------------------------
 
 
 

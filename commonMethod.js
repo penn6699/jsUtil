@@ -85,14 +85,16 @@ function CurrentJsFileDir() {
 
 
 //跳转页面，带有回跳地址
-function Redirect(url, isreturn, target) {
-    var _isreturn = isreturn == undefined ? true : isreturn,
-        _target = target || "_parent",
-        _returnurl = location.href.replace(location.protocol + "//" + location.host, ""),
-        _flag = /\?/.test(url) ? "&" : "?",
-        _href = url + (_isreturn ? _flag + "returnurl=" + encodeURI(_returnurl) : "");
-
-    $('<a target="' + _target + '" style="display:none;"><span>redirect</span>></a>').attr("href", _href).appendTo("body").find("span").click();
+function redirect(url, isreturn, target) {
+	var _isreturn = isreturn == undefined ? true : isreturn,
+		_returnurl = location.href.replace(location.protocol + "//" + location.host, ""),
+		_flag = /\?/.test(url) ? "&" : "?",
+		_href = url + (_isreturn ? _flag + "returnurl=" + encodeURI(_returnurl) : ""),
+		_a = document.createElement('a');
+	_a.target = target || "_self";
+	_a.style.display = 'none';
+	_a.href = _href;
+	_a.click();
 }
 
 //全局唯一标识符GUID,类似.net中的NewID();
