@@ -99,8 +99,10 @@ function redirect(url, isreturn, target) {
 
 //全局唯一标识符GUID,类似.net中的NewID();
 function guid() {
-    function S4() {
-        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    if(typeof(S4)==='undefined') {
+        function S4() {
+            return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+        }
     }
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }

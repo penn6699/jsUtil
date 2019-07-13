@@ -3,37 +3,37 @@
 //当前会话
 (function () {
 
-    //SessionKey 与 Key 转换
-    {
+    //SessionKey 与 Key 转换 -----------------------------------start
 
-        //全局唯一标识符GUID,类似.net中的NewID();
-        var guid = function () {
-            function S4() {
-                return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-            }
-            return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
-        };
+    //随机4位16进制字符串
+    function S4() { return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1); }
 
-        function _getSessionID() {
-            var SessionID = sessionStorage["SessionID"];
-            if (!SessionID) {
-                SessionID = guid();
-                sessionStorage["SessionID"] = SessionID;
-            }
-            return SessionID;
+    //全局唯一标识符GUID,类似.net中的NewID();
+    function guid() { return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4()); }
+
+    //创建SessionID
+    function createSessionID() { return S4() + S4(); }
+    //获取Session ID
+    function _getSessionID() {
+        var SessionID = sessionStorage["SessionID"];
+        if (!SessionID) {
+            SessionID = createSessionID();// guid();
+            sessionStorage["SessionID"] = SessionID;
         }
-
-        function _getSessionKey(key) {            
-            return key + "_" + _getSessionID();
-        }
-
-        function _getKey(SessionKey) {
-            var _SessionKey = SessionKey + "",
-                reg = new RegExp("_" + _getSessionID() + "$");
-            return reg.test(_SessionKey) ? _SessionKey.replace(reg, "") : null;
-        }
-
+        return SessionID;
     }
+
+    function _getSessionKey(key) {
+        return key + "_" + _getSessionID();
+    }
+
+    function _getKey(SessionKey) {
+        var _SessionKey = SessionKey + "",
+            reg = new RegExp("_" + _getSessionID() + "$");
+        return reg.test(_SessionKey) ? _SessionKey.replace(reg, "") : null;
+    }
+
+    //SessionKey 与 Key 转换 -----------------------------------end
 
     //设置数据
     function set(key, value) {
